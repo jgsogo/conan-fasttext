@@ -36,17 +36,11 @@ class Example(ConanFile):
             if getattr(self.options, option_crawl(it)):
                 dest_path = os.path.join(self.package_folder, 'data', 'crawl_vector', it)
                 self.output.info("Install crawl_vectors ('{}') to '{}'".format(it, dest_path))
-                if os.path.exists(dest_path):
-                    self.output.debug(" - path {} already exists, do nothing".format(dest_path))
-                else:
-                    data.CrawlVectors.download(it, "bin", dest_path)
+                data.CrawlVectors.download(it, "bin", dest_path, output=self.output)
             
         for it in supervised_models:
             if getattr(self.options, option_supervised(it)):
                 dest_path = os.path.join(self.package_folder, 'data', 'supervised')
                 self.output.info("Install supervised_models ('{}') to '{}'".format(it, dest_path))
-                if os.path.exists(dest_path):
-                    self.output.info(" - path {} already exists, do nothing".format(dest_path))
-                else:
-                    data.SupervisedModels.download(it, "regular", dest_path)
+                data.SupervisedModels.download(it, "regular", dest_path, output=self.output)
     

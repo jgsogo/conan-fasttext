@@ -23,11 +23,14 @@ class CrawlVectors:
         return languages
 
     @staticmethod
-    def download(lang, format, dest_folder):
+    def download(lang, format, dest_folder, output, delete_if_exists=False):
         assert format in ["bin", "vec"]
         url = "https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.{}.300.{}.gz".format(lang, format)
-        tools.get(url, destination=dest_folder)
-        # TODO: Copy license to dest_folder
+        dest_filename = os.path.join(dest_folder, "cc.{}.300.{}".format(lang, format))
+        if not os.path.exists(dest_filename) or delete_if_exists:
+            output.info(" - output: {}".format(dest_filename))
+            tools.get(url, destination=dest_filename)
+            # TODO: Copy license to dest_folder
 
 
 class SupervisedModels:
@@ -36,11 +39,14 @@ class SupervisedModels:
         return ["ag_news", "amazon_review_full", "amazon_review_polarity", "dbpedia", "sogou_news", "yahoo_answers", "yelp_review_polarity", "yelp_review_full"]
 
     @staticmethod
-    def download(model, dataset, dest_folder):
+    def download(model, dataset, dest_folder, output, delete_if_exists=False):
         assert dataset in ["regular", "compressed"]
         ext = "bin" if dataset == "regular" else "ftz"
         url = "https://dl.fbaipublicfiles.com/fasttext/supervised-models/{}.{}".format(model, ext)
-        tools.download(url, filename=os.path.join(dest_folder, "{}.{}".format(model, ext)))
+        dest_filename = os.path.join(dest_folder, "{}.{}".format(model, ext))
+        if not os.path.exists(dest_filename) or delete_if_exists:
+            output.info(" - output: {}".format(dest_filename))
+            tools.download(url, filename=dest_filename)
 
 
 class CrawlVectorsPackage(ConanFile):
