@@ -2,15 +2,10 @@
 #pragma once
 
 #include <string>
-#include <regex>
 
-#include <oauth.h>
 #include <rxcpp/rx.hpp>
-#include <nlohmann/json.hpp>
-#include <range/v3/all.hpp>
 
 #include "rxcurl.h"
-#include "utils.h"
 #include "tweet.h"
 
 

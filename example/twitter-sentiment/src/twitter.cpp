@@ -1,6 +1,10 @@
 
 #include "twitter.h"
 
+#include <oauth.h>
+#include "utils.h"
+
+
 namespace twitter {
 
     std::function<rxcpp::observable<std::string>(rxcpp::observable<long>)> stringandignore() {
@@ -79,7 +83,6 @@ namespace twitter {
 
         return factory.create(rxcurl::http_request{url, method, {}, {}}) |
                rxcpp::rxo::map([](rxcurl::http_response r) {
-                   std::cerr << "Here we have a boody.chunks!!\n";
                    return r.body.chunks;
                }) |
                rxcpp::operators::finally([]() { std::cerr << "end twitter stream request" << std::endl; }) |
