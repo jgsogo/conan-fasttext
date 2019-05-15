@@ -1,9 +1,8 @@
-import requests
-import re
 import os
+import re
+
+import requests
 from conans import ConanFile, tools
-from conans.model import Generator
-from conans.errors import ConanInvalidConfiguration
 
 
 class CrawlVectors:

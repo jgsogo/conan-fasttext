@@ -1,4 +1,5 @@
 import os
+
 from conans import ConanFile, python_requires
 
 data = python_requires("fasttext_data/0.2.0@jgsogo/stable")
@@ -6,9 +7,11 @@ data = python_requires("fasttext_data/0.2.0@jgsogo/stable")
 crawl_vector_languages = data.CrawlVectors.list_languages()
 supervised_models = data.SupervisedModels.list_models()
 
+
 def option_crawl(lang):
     return "crawl_{}".format(lang)
-    
+
+
 def option_supervised(lang):
     return "supervised_{}".format(lang)
     

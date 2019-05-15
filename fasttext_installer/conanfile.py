@@ -1,6 +1,7 @@
 import os
-import shutil
+
 from conans import ConanFile, tools, CMake
+
 
 class FastText(ConanFile):
     name = "fasttext_installer"
