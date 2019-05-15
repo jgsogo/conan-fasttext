@@ -89,4 +89,13 @@ namespace rxcurl {
 
     rxcurl create_rxcurl();
 
+    enum class errorcodeclass {
+        Invalid,
+        TcpRetry,
+        ErrorRetry,
+        StatusRetry,
+        RateLimited
+    };
+
+    errorcodeclass errorclassfrom(const http_exception& ex);
 }

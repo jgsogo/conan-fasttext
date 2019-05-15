@@ -221,4 +221,33 @@ namespace rxcurl {
                     .subscribe();
         });
     }
+
+    errorcodeclass errorclassfrom(const http_exception& ex) {
+        switch(ex.code()) {
+            case CURLE_COULDNT_RESOLVE_HOST:
+            case CURLE_COULDNT_CONNECT:
+            case CURLE_OPERATION_TIMEDOUT:
+            case CURLE_BAD_CONTENT_ENCODING:
+            case CURLE_REMOTE_FILE_NOT_FOUND:
+                return errorcodeclass::ErrorRetry;
+            case CURLE_GOT_NOTHING:
+            case CURLE_PARTIAL_FILE:
+            case CURLE_SEND_ERROR:
+            case CURLE_RECV_ERROR:
+                return errorcodeclass::TcpRetry;
+            default:
+                if (ex.code() == CURLE_HTTP_RETURNED_ERROR || ex.httpStatus() > 200) {
+                    if (ex.httpStatus() == 420) {
+                        return errorcodeclass::RateLimited;
+                    } else if (ex.httpStatus() == 404 ||
+                               ex.httpStatus() == 406 ||
+                               ex.httpStatus() == 413 ||
+                               ex.httpStatus() == 416) {
+                        return errorcodeclass::Invalid;
+                    }
+                }
+        };
+        return errorcodeclass::StatusRetry;
+    }
+
 }
