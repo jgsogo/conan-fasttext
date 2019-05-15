@@ -56,8 +56,12 @@ int main() {
 
 
     // print result
-    tweets | rxcpp::rxo::map([](twitter::Tweet& t){ return std::string{"."}; /* twitter::tweettext(t.data->tweet);*/}) |
-    rxcpp::operators::subscribe<std::string>(rxcpp::util::println(std::cout));
+    tweets |
+        rxcpp::rxo::map([](twitter::Tweet& t) {
+            /* twitter::tweettext(t.data->tweet);*/
+            return (t.data->words | ranges::view::join(',') | ranges::to_<std::string>());
+        }) |
+        rxcpp::operators::subscribe<std::string>(rxcpp::util::println(std::cout));
 
     return 0;
 }
