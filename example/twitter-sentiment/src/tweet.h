@@ -15,6 +15,7 @@ namespace twitter {
         explicit Tweet(const nlohmann::json& tweet);
 
         std::string id_str() const;
+        std::string user_id() const;
         std::string lang() const;
         std::string text() const;
         time_t timestamp() const;

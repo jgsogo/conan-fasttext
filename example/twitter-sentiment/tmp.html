@@ -1,0 +1,120 @@
+<html>
+
+<head>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.18.1/vis.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.18.1/vis.min.css" rel="stylesheet" type="text/css"/>
+</head>
+
+<body>
+  <script type="text/javascript">
+    function showhideclass(id) {
+      var elements = document.getElementsByClassName(id)
+      for (var i = 0; i < elements.length; i++) {
+        elements[i].style.display = (elements[i].style.display != 'none') ? 'none' : 'block';
+      }
+    }
+  </script>
+  <style>
+    @media print {
+      .noPrint {
+        display: none;
+      }
+    }
+    .button {
+      background-color: #5555cc;
+      border: none;
+      color: white;
+      padding: 5px 10px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 18px;
+    }
+  </style>
+  <div style="width: 100%;">
+    <div id="mynetwork" style="float:left; width: 75%;"></div>
+    <div style="float:right;width:25%;">
+      <div id="details"  style="padding:10;" class="noPrint">Package info: no package selected</div>
+      <button onclick="javascript:showhideclass('controls')" class="button noPrint">
+          Show / hide graph controls
+      </button>
+      <div id="controls" class="controls" style="padding:5; display:none"></div>
+    </div>
+  </div>
+  <div style="clear:both"></div>
+
+
+
+  <script type="text/javascript">
+    var nodes = new vis.DataSet([
+      {id: 0, label: 'twitter-sentiment/0.0', shape: 'box', color: {background: 'White'}, fulllabel: '<h3>conanfile.py (twitter-sentiment/0.0@None/None)</h3><ul><li><b>id</b>: 59f963f12c8fb6a23978a703fe01da25823eba95</li><li><b>url</b>: <a href="None">None</a></li><li><b>homepage</b>: <a href="None">None</a></li><li><b>topics</b>: None</li><ul>'},
+{id: 1, label: 'oauth/1.0.3', shape: 'box', color: {background: 'SkyBlue'}, fulllabel: '<h3>oauth/1.0.3@jgsogo/stable</h3><ul><li><b>id</b>: 14fae29272266356b82ce79ef351e1178c2a16c0</li><li><b>url</b>: <a href="None">None</a></li><li><b>homepage</b>: <a href="None">None</a></li><li><b>topics</b>: None</li><ul>'},
+{id: 2, label: 'libpqxx/6.4.4', shape: 'box', color: {background: 'LightGreen'}, fulllabel: '<h3>libpqxx/6.4.4@bincrafters/stable</h3><ul><li><b>id</b>: e8cbfbedd4b576ec36f9aedeb0ca9fa984275d05</li><li><b>url</b>: <a href="https://github.com/bincrafters/conan-libpqxx">https://github.com/bincrafters/conan-libpqxx</a></li><li><b>homepage</b>: <a href="https://github.com/jtv/libpqxx">https://github.com/jtv/libpqxx</a></li><li><b>license</b>: BSD-3-Clause</li><li><b>author</b>: Bincrafters <bincrafters@gmail.com></li><li><b>topics</b>: ("conan", "libpqxx", "postgres", "postgresql", "data-base")</li><ul>'},
+{id: 3, label: 'OpenSSL/1.0.2q', shape: 'box', color: {background: 'SkyBlue'}, fulllabel: '<h3>OpenSSL/1.0.2q@conan/stable</h3><ul><li><b>id</b>: 75c89fa3e1091e5c3911f9847d6d4abd7c60e60f</li><li><b>url</b>: <a href="http://github.com/lasote/conan-openssl">http://github.com/lasote/conan-openssl</a></li><li><b>homepage</b>: <a href="None">None</a></li><li><b>license</b>: The current OpenSSL licence is an "Apache style" license: https://www.openssl.org/source/license.html</li><li><b>topics</b>: None</li><ul>'},
+{id: 4, label: 'zlib/1.2.11', shape: 'box', color: {background: 'SkyBlue'}, fulllabel: '<h3>zlib/1.2.11@conan/stable</h3><ul><li><b>id</b>: 534dcc368c999e07e81f146b3466b8f656ef1f55</li><li><b>url</b>: <a href="http://github.com/conan-community/conan-zlib">http://github.com/conan-community/conan-zlib</a></li><li><b>homepage</b>: <a href="https://zlib.net">https://zlib.net</a></li><li><b>license</b>: Zlib</li><li><b>author</b>: Conan Community</li><li><b>topics</b>: None</li><ul>'},
+{id: 5, label: 'rxcpp/4.1.0', shape: 'box', color: {background: 'SkyBlue'}, fulllabel: '<h3>rxcpp/4.1.0@bincrafters/stable</h3><ul><li><b>id</b>: 5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9</li><li><b>url</b>: <a href="https://github.com/bincrafters/conan-rxcpp">https://github.com/bincrafters/conan-rxcpp</a></li><li><b>homepage</b>: <a href="https://github.com/ReactiveX/RxCpp">https://github.com/ReactiveX/RxCpp</a></li><li><b>license</b>: Apache-2.0</li><li><b>author</b>: Bincrafters <bincrafters@gmail.com></li><li><b>topics</b>: ("conan", "rxcpp", "reactivex", "algorithms", "values-distributed-in-time")</li><ul>'},
+{id: 6, label: 'range-v3/0.5.0', shape: 'box', color: {background: 'LightGreen'}, fulllabel: '<h3>range-v3/0.5.0@ericniebler/stable</h3><ul><li><b>id</b>: 055dbfab12a08057bd1da0129488d59ff90c2420</li><li><b>url</b>: <a href="https://github.com/ericniebler/range-v3">https://github.com/ericniebler/range-v3</a></li><li><b>homepage</b>: <a href="None">None</a></li><li><b>license</b>: Boost Software License - Version 1.0 - August 17th, 2003</li><li><b>topics</b>: None</li><ul>'},
+{id: 7, label: 'libpq/9.6.9', shape: 'box', color: {background: 'SkyBlue'}, fulllabel: '<h3>libpq/9.6.9@bincrafters/stable</h3><ul><li><b>id</b>: 534dcc368c999e07e81f146b3466b8f656ef1f55</li><li><b>url</b>: <a href="https://github.com/bincrafters/conan-libpq">https://github.com/bincrafters/conan-libpq</a></li><li><b>homepage</b>: <a href="https://www.postgresql.org/docs/current/static/libpq.html">https://www.postgresql.org/docs/current/static/libpq.html</a></li><li><b>license</b>: PostgreSQL</li><li><b>topics</b>: None</li><ul>'},
+{id: 8, label: 'jsonformoderncpp/3.6.1', shape: 'box', color: {background: 'SkyBlue'}, fulllabel: '<h3>jsonformoderncpp/3.6.1@vthiery/stable</h3><ul><li><b>id</b>: 5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9</li><li><b>url</b>: <a href="https://github.com/vthiery/conan-jsonformoderncpp">https://github.com/vthiery/conan-jsonformoderncpp</a></li><li><b>homepage</b>: <a href="None">None</a></li><li><b>license</b>: MIT</li><li><b>author</b>: Vincent Thiery (vjmthiery@gmail.com)</li><li><b>topics</b>: None</li><ul>'},
+{id: 9, label: 'fmt/5.2.1', shape: 'box', color: {background: 'SkyBlue'}, fulllabel: '<h3>fmt/5.2.1@bincrafters/stable</h3><ul><li><b>id</b>: 853c4b61e2571e98cd7b854c1cda6bc111b8b32c</li><li><b>url</b>: <a href="https://github.com/bincrafters/conan-fmt">https://github.com/bincrafters/conan-fmt</a></li><li><b>homepage</b>: <a href="https://github.com/fmtlib/fmt">https://github.com/fmtlib/fmt</a></li><li><b>license</b>: MIT</li><li><b>author</b>: Bincrafters <bincrafters@gmail.com></li><li><b>topics</b>: None</li><ul>'},
+{id: 10, label: 'fasttext/0.2.0', shape: 'box', color: {background: 'SkyBlue'}, fulllabel: '<h3>fasttext/0.2.0@jgsogo/stable</h3><ul><li><b>id</b>: 853c4b61e2571e98cd7b854c1cda6bc111b8b32c</li><li><b>url</b>: <a href="https://github.com/facebookresearch/fastText">https://github.com/facebookresearch/fastText</a></li><li><b>homepage</b>: <a href="None">None</a></li><li><b>license</b>: MIT</li><li><b>topics</b>: None</li><ul>'}
+    ]);
+    var edges = new vis.DataSet([
+     { from: 3, to: 4 },
+{ from: 0, to: 5 },
+{ from: 0, to: 10 },
+{ from: 0, to: 9 },
+{ from: 0, to: 1 },
+{ from: 0, to: 8 },
+{ from: 0, to: 6 },
+{ from: 0, to: 2 },
+{ from: 1, to: 3 },
+{ from: 2, to: 7 }
+    ]);
+    var container = document.getElementById('mynetwork');
+    var controls = document.getElementById('controls');
+    var data = {
+      nodes: nodes,
+      edges: edges
+    };
+    var options = {
+      autoResize: true,
+      locale: 'en',
+      edges: {
+        arrows: { to: {enabled: true}},
+        smooth: { enabled: false}
+      },
+      nodes: {
+          font: {'face': 'monospace', 'align': 'left'}
+      },
+      layout: {
+        "hierarchical": {
+          "enabled": true,
+          "sortMethod": "directed",
+          "direction": "UD",
+          nodeSpacing: 200
+        }
+      },
+      physics: {
+          enabled: false,
+      },
+      configure: {
+        enabled: true,
+        filter: 'layout physics',
+        showButton: false,
+        container: controls
+      }
+    };
+    var network = new vis.Network(container, data, options);
+    network.on('click', function (properties) {
+                           var ids = properties.nodes;
+                           var clickedNodes = nodes.get(ids);
+                           var control = document.getElementById("details");
+                           if(clickedNodes[0])
+                              control.innerHTML = clickedNodes[0].fulllabel;
+                           else
+                              control.innerHTML = "<b>Package info</b>: No package selected";
+                         });
+  </script>
+</body>
+</html>
