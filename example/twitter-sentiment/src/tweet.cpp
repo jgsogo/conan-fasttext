@@ -1,6 +1,9 @@
 
 #include "tweet.h"
 
+#include <sstream>
+#include <iomanip>
+#include <iostream>
 #include "utils.h"
 
 namespace twitter {
@@ -18,7 +21,6 @@ namespace twitter {
         return {};
     }
 
-
     Tweet::Tweet() {}
     Tweet::Tweet(const nlohmann::json& tweet)
             : data(std::make_shared<shared>(shared{tweet}))
@@ -29,5 +31,35 @@ namespace twitter {
             : tweet(t)
             , words(utils::splitwords(tweettext(tweet)))
     {}
+
+
+    std::string Tweet::id_str() const {
+        return this->data->tweet["id_str"];
+    }
+
+    std::string Tweet::text() const {
+        return tweettext(this->data->tweet);
+    }
+
+    time_t Tweet::timestamp() const {
+        if (!!this->data->tweet.count("created_at") && this->data->tweet["created_at"].is_string()) {
+            //return this->data->tweet["created_at"];
+
+            // Parse datetime: Sat May 18 10:41:16 +0000 2019
+            std::istringstream date_stream{std::string{this->data->tweet["created_at"]}};
+            std::tm time_date{};
+            date_stream >> std::get_time(&time_date, "%a %b %d %H:%M:%S +0000 %Y");
+            if(!date_stream.fail()) return timegm(&time_date);;
+        }
+        return {};
+    }
+
+    std::vector<std::string> Tweet::hashtags() const {
+        std::vector<std::string> ret;
+        for(auto& it: this->data->tweet["entities"]["hashtags"]) {
+            ret.push_back(it["text"]);
+        }
+        return ret;
+    }
 
 }

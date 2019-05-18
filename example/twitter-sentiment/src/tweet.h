@@ -14,6 +14,11 @@ namespace twitter {
         Tweet();
         explicit Tweet(const nlohmann::json& tweet);
 
+        std::string id_str() const;
+        std::string text() const;
+        time_t timestamp() const;
+        std::vector<std::string> hashtags() const;
+
         struct shared
         {
             shared();
