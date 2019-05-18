@@ -37,6 +37,13 @@ namespace twitter {
         return this->data->tweet["id_str"];
     }
 
+    std::string Tweet::lang() const {
+        if (!!this->data->tweet.count("lang")) {
+            return this->data->tweet["lang"];
+        }
+        return {};
+    }
+
     std::string Tweet::text() const {
         return tweettext(this->data->tweet);
     }

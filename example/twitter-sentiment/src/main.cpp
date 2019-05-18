@@ -39,7 +39,7 @@ int main() {
     rxcpp::composite_subscription lifetime;
 
     const std::string tw_url_sample = "https://stream.twitter.com/1.1/statuses/sample.json";
-    const std::string tw_url_filter = "https://stream.twitter.com/1.1/statuses/filter.json?track=eurovision&language=en";
+    const std::string tw_url_filter = "https://stream.twitter.com/1.1/statuses/filter.json?track=eurovision";
     bool isFilter = true;
     std::string method = isFilter ? "POST" : "GET";
     std::string url = tw_url_filter;
@@ -87,7 +87,7 @@ int main() {
                 for (auto& tw: tws) {
                     const std::vector<std::string>& hashtags{tw.hashtags()};
                     std::string hashtags_as_str{(hashtags | ranges::view::join(',') | ranges::to_<std::string>())};
-                    db_tweets.emplace_back(std::move(tw.timestamp()), std::move(hashtags_as_str), std::move(tw.text()));
+                    db_tweets.emplace_back(std::move(tw.timestamp()), std::move(tw.lang()), std::move(hashtags_as_str), std::move(tw.text()));
                 }
                 std::cout << "About to save '" << tws.size() << "' tweets\n";
                 db::Database::instance().tweets().insert(db_tweets);
