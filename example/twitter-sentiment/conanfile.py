@@ -16,3 +16,4 @@ class TwitterSentiment(ConanFile):
         self.requires("oauth/1.0.3@jgsogo/stable")
         self.requires("jsonformoderncpp/3.6.1@vthiery/stable")
         self.requires("range-v3/0.5.0@ericniebler/stable")
+        self.requires("libpqxx/6.4.4@bincrafters/stable")

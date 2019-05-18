@@ -168,4 +168,12 @@ namespace twitter {
         };
     }
 
+    auto onlytweets() -> std::function<rxcpp::observable<Tweet>(rxcpp::observable<Tweet>)> {
+        return [](rxcpp::observable<Tweet> s){
+            return s | rxcpp::rxo::filter([](const Tweet& tw){
+                auto& tweet = tw.data->tweet;
+                return !!tweet.count("timestamp_ms");
+            });
+        };
+    }
 }

@@ -42,6 +42,8 @@ namespace twitter {
     }
 
     time_t Tweet::timestamp() const {
+        return std::stoll(this->data->tweet["timestamp_ms"].get<std::string>());
+        /*
         if (!!this->data->tweet.count("created_at") && this->data->tweet["created_at"].is_string()) {
             //return this->data->tweet["created_at"];
 
@@ -52,6 +54,7 @@ namespace twitter {
             if(!date_stream.fail()) return timegm(&time_date);;
         }
         return {};
+         */
     }
 
     std::vector<std::string> Tweet::hashtags() const {

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fmt/format.h>
 #include "twitter.h"
+#include "db/database.h"
 
 #include <range/v3/all.hpp>
 
@@ -12,7 +13,6 @@ std::string humanize(time_t tm) {
     strftime(buf, sizeof buf, "%Y-%m-%d %H:%M", gmtime(&tm));
     return std::string(buf);
 }
-
 
 std::string get_env(const std::string& env_var) {
     const char* value = std::getenv(env_var.c_str());
@@ -30,6 +30,8 @@ int main() {
     const std::string tw_consumer_secret = get_env("TW_CONSUMER_SECRET");
     const std::string tw_access_token_secret = get_env("TW_ACCESS_TOKEN_SECRET");
 
+    // Create database if not exists
+    db::Database::instance().tweets().create();
 
     auto tweetthread = rxcpp::observe_on_new_thread();
     auto poolthread = rxcpp::observe_on_event_loop();
@@ -69,20 +71,35 @@ int main() {
     //    }) |
     //    rxcpp::operators::subscribe<std::string>(rxcpp::util::println(std::cout));
 
-    tweets |
-        rxcpp::rxo::map([](twitter::Tweet& t) {
-            std::vector<std::string> hashtags{t.hashtags()};
-            std::string hashtags_as_str{(hashtags | ranges::view::join(',') | ranges::to_<std::string>())};
-            //std::cout << t.data->tweet.dump();
-            return std::make_tuple(t.timestamp(), hashtags_as_str, t.text());
+
+    auto batch_tweets = tweets |
+                        twitter::onlytweets() |
+                        rxcpp::rxo::buffer_with_time(std::chrono::milliseconds(2000), poolthread) |
+                        rxcpp::rxo::filter([](const std::vector<twitter::Tweet>& tws){ return !tws.empty(); }) |
+                        rxcpp::rxo::publish() |
+                        rxcpp::rxo::ref_count() |
+                        rxcpp::rxo::as_dynamic();
+
+    // store tweets in the database (once every 2 seconds)
+    batch_tweets |
+            rxcpp::operators::subscribe<std::vector<twitter::Tweet>>([](std::vector<twitter::Tweet> tws) {
+                std::vector<db::Tweet> db_tweets; db_tweets.reserve(tws.size());
+                for (auto& tw: tws) {
+                    const std::vector<std::string>& hashtags{tw.hashtags()};
+                    std::string hashtags_as_str{(hashtags | ranges::view::join(',') | ranges::to_<std::string>())};
+                    db_tweets.emplace_back(std::move(tw.timestamp()), std::move(hashtags_as_str), std::move(tw.text()));
+                }
+                std::cout << "About to save '" << tws.size() << "' tweets\n";
+                db::Database::instance().tweets().insert(db_tweets);
+            });
+
+
+    // Count total number of tweets (interval 5 seconds)
+    batch_tweets |
+        rxcpp::rxo::map([](const std::vector<twitter::Tweet>& tws) { return tws.size(); }) |
+        rxcpp::rxo::scan(0, [](int seed, int last_batch) {
+            return seed+last_batch;
         }) |
-        rxcpp::operators::subscribe<std::tuple<time_t, std::string, std::string>>([](std::tuple<time_t, std::string, std::string> t) {
-            //fmt::print("{} > {} >> {}", humanize(std::get<0>(t)), std::get<1>(t), std::get<2>(t));
-        });
-
-    tweets |
-        rxcpp::rxo::scan(0, [](int seed, twitter::Tweet& t) { return seed+1;}) |
         rxcpp::operators::subscribe<int>(rxcpp::util::println(std::cout));
-
     return 0;
 }
